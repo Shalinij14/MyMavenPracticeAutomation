@@ -1,4 +1,4 @@
-practicettest
+
 pipeline {
     agent any
 
