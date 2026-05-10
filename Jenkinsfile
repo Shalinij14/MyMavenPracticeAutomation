@@ -1,16 +1,13 @@
+
+
 pipeline {
-    agent any  
+    agent any
 
     tools {
         maven 'Maven'
     }
 
-    environment {
-        JAR_FILE = "target/MyMavenGuavaApp-1.0-SNAPSHOT.jar"
-    }
-
     stages {
-
         stage('Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/Shalinij14/MyMavenPracticeAutomation.git'
@@ -19,47 +16,32 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean compile'
+                sh 'mvn clean package'
             }
         }
 
+        // Optional Test Stage (if needed)
+    
         stage('Test') {
             steps {
                 sh 'mvn test'
             }
         }
+        
 
-        stage('Package') {
-            steps {
-                sh 'mvn package -DskipTests'
-            }
-        }
-
-        stage('Verify JAR') {
-            steps {
-                sh '''
-                echo "Current directory:"
-                pwd
-
-                echo "Files in target folder:"
-                ls -l target/
-                '''
-            }
-        }
-
+        // Optional Run (not recommended for Jenkins)
+       
         stage('Run Application') {
             steps {
-                sh '''
-                echo "Starting application..."
-                nohup java -jar target/MyMavenPracticeAutomation-1.0-SNAPSHOT.jar > app.log 2>&1 &
-                '''
+                sh 'java -jar target/MyMavenPracticeAutomation-1.0-SNAPSHOT.jar'
             }
         }
+       
     }
 
     post {
         success {
-            echo 'Build and deployment successful!'
+            echo 'Build successful!'
         }
         failure {
             echo 'Build failed!'
