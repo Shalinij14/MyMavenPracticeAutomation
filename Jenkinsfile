@@ -32,7 +32,7 @@ pipeline {
         /*
         stage('Run Application') {
             steps {
-                sh 'nohup java -jar target/MyMavenPracticeAutomation-1.0-SNAPSHOT.jar &'
+                sh 'mvn exec:java -Dexec.mainCLass="com.example.App"'
             }
         }
         */
